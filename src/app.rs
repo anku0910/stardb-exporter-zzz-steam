@@ -63,8 +63,6 @@ pub struct User {
 #[derive(Default, serde::Serialize, serde::Deserialize)]
 pub struct Paths {
     pub zzz: Option<PathBuf>,
-    pub hsr: Option<PathBuf>,
-    pub gi: Option<PathBuf>,
 }
 
 impl App {
@@ -155,7 +153,7 @@ impl App {
             message_tx,
             message_rx,
             state: State::Waiting("Updating".to_string()),
-            game: games::Game::Hsr,
+            game: games::Game::Zzz,
             toasts: egui_notify::Toasts::default().with_anchor(egui_notify::Anchor::BottomRight),
             theme,
             user,
@@ -194,8 +192,7 @@ impl App {
             Message::Theme(theme) => self.theme = theme,
             Message::User(user) => self.user = user,
             Message::Path(path) => match self.game {
-                games::Game::Hsr => self.paths.hsr = Some(path),
-                games::Game::Gi => self.paths.gi = Some(path),
+
                 games::Game::Zzz => self.paths.zzz = Some(path),
             },
             Message::Logout => {

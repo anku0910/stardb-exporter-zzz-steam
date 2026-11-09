@@ -72,12 +72,6 @@ impl ExportError {
                         Some("The exporter has to be running before the game logs in.".to_string());
                 }
                 report.steps = restart_steps();
-                if game == Game::Hsr {
-                    report.steps.push(
-                        "If it keeps happening, the game has probably been updated. Wait for an exporter update."
-                            .to_string(),
-                    );
-                }
             }
             Self::SessionSeedMissing => {
                 report.title = "Couldn't find the session key's seed".to_string();

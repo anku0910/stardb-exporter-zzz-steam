@@ -1,6 +1,4 @@
 mod error;
-mod gi;
-mod hsr;
 mod zzz;
 
 use std::{
@@ -39,8 +37,6 @@ const MAX_CAPTURE_RESTARTS: u32 = 5;
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Game {
-    Hsr,
-    Gi,
     Zzz,
 }
 
@@ -560,8 +556,6 @@ impl Game {
         stream: &mut PacketStream,
     ) -> Result<Achievements, ExportError> {
         panic::catch_unwind(AssertUnwindSafe(|| match self {
-            Game::Hsr => hsr::sniff(achievement_ids, stream),
-            Game::Gi => gi::sniff(achievement_ids, stream),
             Game::Zzz => zzz::sniff(achievement_ids, stream),
         }))
         .unwrap_or_else(|payload| Err(ExportError::Internal(panic_message(&*payload))))
@@ -569,8 +563,6 @@ impl Game {
 
     pub fn name(self) -> &'static str {
         match self {
-            Game::Hsr => "Honkai Star Rail",
-            Game::Gi => "Genshin Impact",
             Game::Zzz => "Zenless Zone Zero",
         }
     }
@@ -578,44 +570,30 @@ impl Game {
     /// Where the packets of this game's latest run get logged, in the log folder.
     pub fn capture_file(self) -> &'static str {
         match self {
-            Game::Hsr => "latest-hsr.pcapng",
-            Game::Gi => "latest-gi.pcapng",
             Game::Zzz => "latest-zzz.pcapng",
         }
     }
 
     fn ports(self) -> (u16, u16) {
         match self {
-            Game::Hsr => (23301, 23302),
-            Game::Gi => (22101, 22102),
             Game::Zzz => (20501, 20502),
         }
     }
 
     pub fn game_path(self) -> anyhow::Result<PathBuf> {
         match self {
-            Game::Hsr => hsr::game_path(),
-            Game::Gi => gi::game_path(),
             Game::Zzz => zzz::game_path(),
         }
     }
 
     pub fn achievement_url(self) -> String {
-        let prefix = match self {
-            Game::Hsr => "",
-            Game::Gi => "genshin/",
-            Game::Zzz => "zzz/",
-        };
+        let prefix = "zzz/";
 
         format!("https://stardb.gg/{prefix}achievement-tracker")
     }
 
     pub fn pull_url(self) -> String {
-        let path = match self {
-            Game::Hsr => "warp-tracker",
-            Game::Gi => "genshin/wish-tracker",
-            Game::Zzz => "zzz/signal-tracker",
-        };
+        let path = "zzz/signal-tracker";
 
         format!("https://stardb.gg/{path}")
     }
@@ -633,11 +611,7 @@ impl Game {
             arcade: bool,
         }
 
-        let path = match self {
-            Game::Hsr => "/api/achievements",
-            Game::Gi => "/api/gi/achievements",
-            Game::Zzz => "/api/zzz/achievements",
-        };
+        let path = "/api/zzz/achievements";
 
         let url = format!("https://stardb.gg{path}");
         let backup_url =
@@ -683,11 +657,7 @@ impl Game {
         run: &RunHandle,
         log: &CaptureLog,
     ) -> anyhow::Result<()> {
-        let packet_filer = match self {
-            Game::Hsr => "udp portrange 23301-23302",
-            Game::Gi => "udp portrange 22101-22102",
-            Game::Zzz => "udp portrange 20501-20502",
-        };
+        let packet_filer = "udp portrange 20501-20502";
 
         tracing::info!("Running exporter with pcap...");
         tracing::debug!("Finding devices...");

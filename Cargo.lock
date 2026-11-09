@@ -447,21 +447,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "auto-artifactarium"
-version = "2.0.0"
-source = "git+https://github.com/hashblen/auto-artifactarium#7cd32914fa58f501c6e91fee1f0cf7782eccdda5"
-dependencies = [
- "base64",
- "etherparse",
- "kcp",
- "protobuf",
- "protobuf-codegen",
- "rand_mt",
- "rsa",
- "tracing",
-]
-
-[[package]]
 name = "auto-discipher"
 version = "2.0.0"
 source = "git+https://github.com/hashblen/auto-discipher#9320dfa4e061b1b761d891c93dcc9272bc2421e8"
@@ -473,20 +458,6 @@ dependencies = [
  "protobuf-codegen",
  "rand_mt",
  "rsa",
- "tracing",
-]
-
-[[package]]
-name = "auto-reliquary"
-version = "2.0.0"
-source = "git+https://github.com/hashblen/auto-reliquary#e4e04475697ec578e38533d6f012454674a301a9"
-dependencies = [
- "base64",
- "etherparse",
- "kcp",
- "protobuf",
- "protobuf-codegen",
- "rand_mt",
  "tracing",
 ]
 
@@ -4293,9 +4264,7 @@ version = "2.24.0"
 dependencies = [
  "anyhow",
  "arboard",
- "auto-artifactarium",
  "auto-discipher",
- "auto-reliquary",
  "base64",
  "eframe",
  "egui",

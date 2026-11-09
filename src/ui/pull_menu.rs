@@ -7,26 +7,6 @@ use crate::{
 
 pub fn show(ui: &mut egui::Ui, app: &App) {
     match app.game {
-        games::Game::Hsr => {
-            ui.label(format!(
-                "Path: {}",
-                app.paths
-                    .hsr
-                    .as_ref()
-                    .map(|p| p.display().to_string())
-                    .unwrap_or("None".to_string())
-            ));
-        }
-        games::Game::Gi => {
-            ui.label(format!(
-                "Path: {}",
-                app.paths
-                    .gi
-                    .as_ref()
-                    .map(|p| p.display().to_string())
-                    .unwrap_or("None".to_string())
-            ));
-        }
         games::Game::Zzz => {
             ui.label(format!(
                 "Path: {}",
@@ -50,16 +30,13 @@ pub fn show(ui: &mut egui::Ui, app: &App) {
     }
 
     if ui
-        .button("Manual selection (e.g. D:\\Star Rail\\Games\\StarRail_Data)")
-        .clicked()
+        .button("Manual selection (e.g. F:\\SteamLibrary\\steamapps\\common\\Zenless Zone Zero\\games\\ZenlessZoneZero Game\\ZenlessZoneZero_Data)")
         && let Some(path) = rfd::FileDialog::new().pick_folder()
     {
         app.message_tx.send(Message::Path(path)).unwrap();
     }
 
     if let Some(path) = match app.game {
-        games::Game::Hsr => &app.paths.hsr,
-        games::Game::Gi => &app.paths.gi,
         games::Game::Zzz => &app.paths.zzz,
     } {
         if ui.button("Get Url").clicked() {

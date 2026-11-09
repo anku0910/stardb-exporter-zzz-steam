@@ -7,26 +7,6 @@ use crate::{
 
 pub fn show(ui: &mut egui::Ui, app: &App) {
     match app.game {
-        games::Game::Hsr => {
-            if ui.button("Achievement Exporter").clicked() {
-                app.message_tx.send(Message::StartRun).unwrap();
-            }
-
-            if ui.button("Warp Exporter").clicked() {
-                app.message_tx.send(Message::GoTo(State::PullMenu)).unwrap();
-            }
-        }
-        games::Game::Gi => {
-            ui.colored_label(ui.visuals().hyperlink_color, format!("{} Make sure, that you fresh started the game before using the achievement exporter!!", icons::INFORMATION_LINE));
-
-            if ui.button("Achievement Exporter").clicked() {
-                app.message_tx.send(Message::StartRun).unwrap();
-            }
-
-            if ui.button("Wish Exporter").clicked() {
-                app.message_tx.send(Message::GoTo(State::PullMenu)).unwrap();
-            }
-        }
         games::Game::Zzz => {
             ui.colored_label(ui.visuals().hyperlink_color, format!("{} Make sure, that you fresh started the game before using the achievement exporter!!", icons::INFORMATION_LINE));
 

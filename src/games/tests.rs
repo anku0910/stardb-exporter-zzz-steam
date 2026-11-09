@@ -41,8 +41,6 @@ fn hsr_asks_to_wait_for_an_update_but_the_others_do_not() {
             .iter()
             .any(|step: &String| step.contains("update"))
     };
-    assert!(mentions_update(Game::Hsr));
-    assert!(!mentions_update(Game::Gi));
     assert!(!mentions_update(Game::Zzz));
 }
 
@@ -60,8 +58,6 @@ fn captures_dir() -> PathBuf {
 
 fn game_named(name: &str) -> Game {
     match name {
-        "hsr" => Game::Hsr,
-        "gi" => Game::Gi,
         "zzz" => Game::Zzz,
         _ => panic!("unknown game {name}"),
     }
@@ -112,7 +108,7 @@ fn a_live_capture_stops_promptly_without_any_packets() {
     let (message_tx, message_rx) = mpsc::channel();
     let run = RunHandle::default();
 
-    let captures = Game::Hsr
+    let captures = Game::Zzz
         .start_captures(device_tx, &message_tx, &run)
         .unwrap();
     println!("{} capture(s) started", captures.len());
@@ -217,8 +213,6 @@ fn a_capture_without_a_matching_key_says_so() {
         let mut stream = stream_of(packets, &run);
         let outcome = match game {
             Game::Zzz => zzz::sniff_with_keys(vec![vec![0; 16]], &ids, &mut stream),
-            Game::Gi => gi::sniff_with_keys(Default::default(), &ids, &mut stream),
-            Game::Hsr => hsr::sniff_with_keys(Default::default(), &ids, &mut stream),
         };
         println!(
             "{name}: {:?} after {} packets",

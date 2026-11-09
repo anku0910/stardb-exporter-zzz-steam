@@ -8,11 +8,7 @@ use crate::{
 pub fn show(ui: &mut egui::Ui, result: &Achievements, app: &App) {
     let achievements = &result.ids;
 
-    let key = match app.game {
-        games::Game::Hsr => "hsr_achievements",
-        games::Game::Gi => "gi_achievements",
-        games::Game::Zzz => "zzz_achievements",
-    };
+    let key = "zzz_achievements";
 
     ui.label("Finished");
 
@@ -55,11 +51,7 @@ pub fn show(ui: &mut egui::Ui, result: &Achievements, app: &App) {
             .send(Message::Toast(egui_notify::Toast::info("Syncing")))
             .unwrap();
 
-        let prefix = match app.game {
-            games::Game::Hsr => "",
-            games::Game::Gi => "gi/",
-            games::Game::Zzz => "zzz/",
-        };
+        let prefix = "zzz/";
 
         let url = format!("https://stardb.gg/api/users/me/{prefix}achievements/completed");
 

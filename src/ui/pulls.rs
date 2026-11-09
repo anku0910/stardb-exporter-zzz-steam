@@ -18,20 +18,12 @@ pub fn show(ui: &mut egui::Ui, url: &str, app: &App) {
         }
     }
 
-    let import_url = match app.game {
-        games::Game::Hsr => "https://stardb.gg/warp-import",
-        games::Game::Gi => "https://stardb.gg/genshin/wish-import",
-        games::Game::Zzz => "https://stardb.gg/zzz/signal-import",
-    };
+    let import_url = "https://stardb.gg/zzz/signal-import";
 
     ui.hyperlink_to("Click here to import", import_url);
 
     if ui.button("Sync to stardb").clicked() {
-        let import_url = match app.game {
-            games::Game::Hsr => "https://stardb.gg/api/warps-import",
-            games::Game::Gi => "https://stardb.gg/api/gi/wishes-import",
-            games::Game::Zzz => "https://stardb.gg/api/zzz/signals-import",
-        };
+        let import_url = "https://stardb.gg/api/zzz/signals-import";
 
         let request = if let Some(user) = &app.user {
             ureq::post(import_url).header("Cookie", &user.id)
